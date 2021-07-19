@@ -1,0 +1,70 @@
+// Copyright 2019, Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package google.cloud.conformance.storage.v1;
+
+option java_package = "com.google.cloud.conformance.storage.v1";
+option java_multiple_files = true;
+
+message RetryTests {
+  repeated RetryTest testCases = 1;
+}
+
+// A list of instructions to send as headers to the GCS emulator. Each
+// instruction will force a specified failure for that request.
+message InstructionList {
+  repeated string instructions = 1;
+}
+
+// Test resources that are necessary for a method call. For example,
+// storage.objects.get would require BUCKET and OBJECT.
+enum Resource {
+  BUCKET = 0;
+  OBJECT = 1;
+  NOTIFICATION = 2;
+  HMAC_KEY = 3;
+}
+
+// A particular storage API method and required resources in order to test it.
+// Methods must be implemented in tests for each language.
+message Method {
+  string name = 1;  // e.g. storage.objects.get
+  repeated Resource resources = 2;
+}
+
+// Schema for a retry test, corresponding to a single scenario from the design
+// doc.
+message RetryTest {
+  // Scenario number
+  int32 id = 1;
+
+  // Human-readable description of the test case.
+  string description = 2;
+
+  // List of emulator instructions.
+  repeated InstructionList cases = 3;
+
+  // List of API methods to be tested.
+  repeated Method methods = 4;
+
+  // Whether a precondition is provided (for conditionally-idempotent methods
+  // only).
+  bool preconditionProvided = 5;
+
+  // Whether we expect the method calls to eventually succeed after the client
+  // library retries.
+  bool expectSuccess = 6;
+}

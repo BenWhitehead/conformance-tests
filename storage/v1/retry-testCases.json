@@ -1,0 +1,25 @@
+{
+  "testCases": [
+    {
+      "id": 1,
+      "description": "always idempotent",
+      "cases": [
+        {
+          "instructions": ["return-503", "return-503", "return-503"]
+        },
+        {
+          "instructions": ["reset-connection", "reset-connection", "reset-connection"]
+        },
+        {
+          "instructions": ["reset-connection", "return-503", "return-503"]
+        }
+      ],
+      "methods": [
+        {"name": "storage.buckets.get", "resources":  ["BUCKET"]},
+        {"name": "storage.objects.get", "resources":  ["BUCKET", "OBJECT"]}
+      ],
+      "preconditionProvided": false,
+      "expectSuccess": true
+    }
+  ]
+}
