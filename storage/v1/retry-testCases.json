@@ -8,10 +8,10 @@
           "instructions": ["return-503", "return-503", "return-503"]
         },
         {
-          "instructions": ["reset-connection", "reset-connection", "reset-connection"]
+          "instructions": ["return-reset-connection", "return-reset-connection", "return-reset-connection"]
         },
         {
-          "instructions": ["reset-connection", "return-503", "return-503"]
+          "instructions": ["return-reset-connection", "return-503", "return-503"]
         }
       ],
       "methods": [
